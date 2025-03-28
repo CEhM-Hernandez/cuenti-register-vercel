@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum StepName {
+  EMAIL_PASSWORD
+  BUSINESS_TYPE
+  FULL_NAME
+  PHONE
+}
+
+model User {
+  id             String         @id @default(cuid())
+  email          String         @unique
+  password_hash  String
+  isAceptedTerms Boolean        @default(false)
+  lastStepId     Int
+  lastStep       Step           @relation(fields: [lastStepId], references: [id])
+  allyCode       Int
+  emailVerified  DateTime?
+  business_type  String?        @db.Text
+  other_business String?        @db.Text
+  name           String?        @db.Text
+  lastname       String?        @db.Text
+  phone_number   String?        @db.Text
+  phone_prefix   String?        @db.TinyText
+  country_name   String?        @db.Text
+  department     String?        @db.Text
+  city           String?        @db.Text
+  country_code   String?        @db.TinyText
+  refreshTokens  RefreshToken[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Step {
+  id          Int      @id
+  name        StepName @unique
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User[]
+}
+
+model VerificationToken {
+  identifier String   @id
+  token      String   @unique
+  expires    DateTime
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}

@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --heroui-default-foreground: 218, 66%, 30%, 1;
+}
+
+/* ------------- fonts ------------- */
+.font-rubik {
+  letter-spacing: -0.3px;
+}
+
+/* ------------- scrollbar ------------- */
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  border-radius: 9999px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #8D8D8D;
+  border-radius: 9999px;
+  transition: all 300ms;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+
+  #custom-autocomplete [data-slot="input-wrapper"],
+  .custom-autocomplete [data-slot="input-wrapper"] {
+    @apply h-14 rounded-l-xl hover:border-cuenti-light-blue border-cuenti-dark-blue border-r-0;
+  }
+}
